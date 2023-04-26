@@ -3,7 +3,7 @@
 [![[CI] Lint](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/lint.yml/badge.svg)](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/lint.yml)
 [![[CI] Test](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/test.yml/badge.svg)](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/test.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9cf5fb91121f322a50c6/maintainability)](https://codeclimate.com/github/ConsorciAOC-PRJ/decidim-module-trusted-ids/maintainability)
-[![Codecov](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids/branch/master/graph/badge.svg)](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids)
+[![Codecov](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids/branch/main/graph/badge.svg)](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids)
 [![Gem Version](https://badge.fury.io/rb/decidim-trusted-ids.svg)](https://badge.fury.io/rb/decidim-trusted-ids)
 
 Translations:
