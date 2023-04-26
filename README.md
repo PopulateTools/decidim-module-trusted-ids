@@ -6,19 +6,35 @@
 [![Codecov](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids/branch/master/graph/badge.svg)](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids)
 [![Gem Version](https://badge.fury.io/rb/decidim-trusted-ids.svg)](https://badge.fury.io/rb/decidim-trusted-ids)
 
+Translations:
+
 [![Translations](https://badges.awesome-crowdin.com/translation-14246854-583683.png)](https://crowdin.com/project/decidim-trusted-ids)
+
+This module is an evolution of the original [IdCat Mòbil](https://github.com/gencat/decidim-module-idcat_mobil) that was funded by the Department d'Exteriors of [Generalitat de Catalunya](http://gencat.cat) and developed by [CodiTramuntana](http://coditramuntana.com/).
+
+The main goal of this module is to decouple the authentication method from the IdCat Mòbil and pursue a more agnostic with a registry of providers. It also implements additional user options for extended verification methods using Via Oberta (or other providers) with improved user's control over personal data management.
+
+Workflow:
+
+![Workflow](docs/workflow.png)
+
+### Registration methods:
 
 User registration and login through IdCat Mòbil, an authentication method that uses OAuth 2.0 protocol.
 _IdCat mòbil_ is an identity validator from VÀLid (Validador d'Identitats del Consorci AOC).
-
-User verification via IdCat Mòbil was started but is incomplete.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'decidim-idcat_mobil'
+gem "decidim-trusted_ids"
+```
+
+Or, if you want to stay up to date with the latest changes use this line instead:
+
+```ruby
+gem 'decidim-trusted_ids', git: "https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids
 ```
 
 And then execute:
@@ -29,55 +45,119 @@ bundle install
 
 ## Usage
 
-To use it you have to first configure the omniauth-idcat_mobil.
-
-### omniauth-idcat_mobil configuration
-`IdCat mòbil` will be available as a configurable OAuth2 strategy.
-Check how to configure the strategy in [Decidim's related documentation](https://github.com/decidim/decidim/blob/develop/docs/services/social_providers.md). The summary is that you have to edit your `config/secrets.rb` and simply enable the strategy:
-
-```yaml
-  omniauth:
-    idcat_mobil:
-      enabled: true
-      icon_path: decidim/idcat_mobil/idcat_mobil-icon.svg
-```
-
-Remember to set `IDCAT_MOBIL_CLIENT_ID`, `IDCAT_MOBIL_CLIENT_SECRET` and `IDCAT_MOBIL_SITE_URL` environment variables.
-
-
-Refer to `omniauth-idcat_mobil` gem for further documentation.
-
-## TODO
-
-- User Verification development has to be finished.
+todo..
 
 ## Contributing
 
-See [Decidim](https://github.com/decidim/decidim).
+Bug reports and pull requests are welcome on GitHub at https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids.
 
-### Run tests
+### Developing
 
-Create a dummy app in your application (if not present):
+To start contributing to this project, first:
+
+- Install the basic dependencies (such as Ruby and PostgreSQL)
+- Clone this repository
+
+Decidim's main repository also provides a Docker configuration file if you
+prefer to use Docker instead of installing the dependencies locally on your
+machine.
+
+You can create the development app by running the following commands after
+cloning this project:
 
 ```bash
-bundle exec rake decidim:generate_external_test_app
+bundle
+DATABASE_USERNAME=<username> DATABASE_PASSWORD=<password> bundle exec rake development_app
 ```
 
-And run tests:
+Note that the database user has to have rights to create and drop a database in
+order to create the dummy test app database.
+
+Then to test how the module works in Decidim, start the development server:
 
 ```bash
-bundle exec rspec spec/
+DATABASE_USERNAME=<username> DATABASE_PASSWORD=<password> bin/rails s
 ```
 
-### Translations
+Note that `bin/rails` is a convenient wrapper around the command `cd development_app; bundle exec rails`.
 
-Translations are managed in Crowdin: 
+In case you are using [rbenv](https://github.com/rbenv/rbenv) and have the
+[rbenv-vars](https://github.com/rbenv/rbenv-vars) plugin installed for it, you
+can add the environment variables to the root directory of the project in a file
+named `.rbenv-vars`. If these are defined for the environment, you can omit
+defining these in the commands shown above.
+
+#### Webpacker notes
+
+As latests versions of Decidim, this repository uses Webpacker for Rails. This means that compilation
+of assets is required everytime a Javascript or CSS file is modified. Usually, this happens
+automatically, but in some cases (specially when actively changes that type of files) you want to 
+speed up the process. 
+
+To do that, start in a separate terminal than the one with `bin/rails s`, and BEFORE it, the following command:
+
+```bash
+bin/webpack-dev-server
+```
+
+#### Code Styling
+
+Please follow the code styling defined by the different linters that ensure we
+are all talking with the same language collaborating on the same project. This
+project is set to follow the same rules that Decidim itself follows.
+
+[Rubocop](https://rubocop.readthedocs.io/) linter is used for the Ruby language.
+
+You can run the code styling checks by running the following commands from the
+console:
+
+```bash
+bundle exec rubocop
+```
+
+To ease up following the style guide, you should install the plugin to your
+favorite editor, such as:
+
+- Sublime Text - [Sublime RuboCop](https://github.com/pderichs/sublime_rubocop)
+- Visual Studio Code - [Rubocop for Visual Studio Code](https://github.com/misogi/vscode-ruby-rubocop)
+
+### Testing
+
+To run the tests run the following in the gem development path:
+
+```bash
+bundle
+DATABASE_USERNAME=<username> DATABASE_PASSWORD=<password> bundle exec rake test_app
+DATABASE_USERNAME=<username> DATABASE_PASSWORD=<password> bundle exec rspec
+```
+
+Note that the database user has to have rights to create and drop a database in
+order to create the dummy test app database.
+
+In case you are using [rbenv](https://github.com/rbenv/rbenv) and have the
+[rbenv-vars](https://github.com/rbenv/rbenv-vars) plugin installed for it, you
+can add these environment variables to the root directory of the project in a
+file named `.rbenv-vars`. In this case, you can omit defining these in the
+commands shown above.
+
+### Test code coverage
+
+Running tests automatically generates a code coverage report. To generate the complete report run all the tests using this command:
+
+```bash
+bundle exec rspec
+```
+
+This will generate a folder named `coverage` in the project root which contains
+the code coverage report.
+
+### Localization
+
+If you would like to see this module in your own language, you can help with its
+translation at Crowdin:
 
 https://crowdin.com/project/decidim-trusted-ids
 
 ## License
 
-
-The Department d'Exteriors of [Generalitat de Catalunya](http://gencat.cat) makes this gem available as open source under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE.
-
-Authored by [CodiTramuntana](http://coditramuntana.com).
+This engine is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.

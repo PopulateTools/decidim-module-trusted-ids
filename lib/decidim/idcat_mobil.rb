@@ -3,12 +3,12 @@
 require "decidim/admin"
 require "decidim/verifications"
 
-require "decidim/idcat_mobil/on_omniauth_registration_listener"
-require "decidim/idcat_mobil/engine"
+require "decidim/trusted_ids/on_omniauth_registration_listener"
+require "decidim/trusted_ids/engine"
 
 module Decidim
-  # This namespace holds the logic of the `IdcatMobil` component. This component
-  # allows users to create idcat_mobil in a participatory space.
-  module IdcatMobil
+  # This namespace holds the logic of the `TrustedIds` component. This component
+  # allows users to create trusted_ids in a participatory space.
+  module TrustedIds
   end
 end

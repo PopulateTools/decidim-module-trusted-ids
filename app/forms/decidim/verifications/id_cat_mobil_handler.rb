@@ -29,14 +29,14 @@ module Decidim
       def idcatmobil_method?
         return true if oauth_data["method"] == "idcatmobil"
 
-        errors.add(:base, I18n.t("decidim.verifications.idcat_mobil.errors.invalid_method"))
+        errors.add(:base, I18n.t("decidim.verifications.trusted_ids.errors.invalid_method"))
         false
       end
 
       def has_ok_status?
         return true if oauth_data["status"] == "ok"
 
-        errors.add(:base, I18n.t("decidim.verifications.idcat_mobil.errors.invalid_status"))
+        errors.add(:base, I18n.t("decidim.verifications.trusted_ids.errors.invalid_status"))
         false
       end
     end
