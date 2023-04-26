@@ -34,7 +34,7 @@ gem "decidim-trusted_ids"
 Or, if you want to stay up to date with the latest changes use this line instead:
 
 ```ruby
-gem 'decidim-trusted_ids', git: "https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids
+gem 'decidim-trusted_ids', git: "https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids"
 ```
 
 And then execute:

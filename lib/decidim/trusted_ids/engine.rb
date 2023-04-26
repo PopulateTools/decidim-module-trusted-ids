@@ -2,7 +2,7 @@
 
 require "rails"
 require "decidim/core"
-require "omniauth/trusted_ids"
+require "omniauth/idcat_mobil"
 
 module Decidim
   module TrustedIds

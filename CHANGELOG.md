@@ -2,6 +2,7 @@
 Following Semantic Versioning 2.
 
 ## next version:
+- Rename module to TrustedIds
 
 ## Version 0.3.0 (MINOR)
 - Update omniauth-idcat_mobil: Send the client_id and the client_secret during the AuthToken retrieval.
