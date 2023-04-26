@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 module Decidim
+  # This holds the decidim-action_delegator version.
   module TrustedIds
-    def self.version
-      # See CHANGELOG.md to see what changed
-      "0.3.0"
-    end
-
-    def self.decidim_version
-      "0.25.2"
-    end
+    VERSION = "0.4.0"
+    DECIDIM_VERSION = "0.26.5"
+    COMPAT_DECIDIM_VERSION = [">= 0.26.0", "< 0.27"].freeze
   end
 end
