@@ -1,4 +1,12 @@
-# Decidim::IdcatMobil
+# Decidim :: Trusted IDs
+
+[![[CI] Lint](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/lint.yml/badge.svg)](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/lint.yml)
+[![[CI] Test](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/test.yml/badge.svg)](https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids/actions/workflows/test.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9cf5fb91121f322a50c6/maintainability)](https://codeclimate.com/github/ConsorciAOC-PRJ/decidim-module-trusted-ids/maintainability)
+[![Codecov](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids/branch/master/graph/badge.svg)](https://codecov.io/gh/ConsorciAOC-PRJ/decidim-module-trusted-ids)
+[![Gem Version](https://badge.fury.io/rb/decidim-trusted-ids.svg)](https://badge.fury.io/rb/decidim-trusted-ids)
+
+[![Translations](https://badges.awesome-crowdin.com/translation-14246854-583683.png)](https://crowdin.com/project/decidim-trusted-ids)
 
 User registration and login through IdCat Mòbil, an authentication method that uses OAuth 2.0 protocol.
 _IdCat mòbil_ is an identity validator from VÀLid (Validador d'Identitats del Consorci AOC).
@@ -60,6 +68,12 @@ And run tests:
 ```bash
 bundle exec rspec spec/
 ```
+
+### Translations
+
+Translations are managed in Crowdin: 
+
+https://crowdin.com/project/decidim-trusted-ids
 
 ## License
 
