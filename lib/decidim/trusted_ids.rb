@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-require "decidim/admin"
-require "decidim/verifications"
-
 require "decidim/trusted_ids/on_omniauth_registration_listener"
 require "decidim/trusted_ids/engine"
 
 module Decidim
-  # This namespace holds the logic of the `TrustedIds` component. This component
-  # allows users to create trusted_ids in a participatory space.
   module TrustedIds
+    include ActiveSupport::Configurable
+
+    # Public: This is the main configuration entry point for the TrustedIds
+    config_accessor :omniauth_provider do
+      "valid"
+    end
   end
 end

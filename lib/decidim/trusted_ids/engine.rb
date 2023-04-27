@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rails"
-require "decidim/core"
 require "omniauth/idcat_mobil"
 
 module Decidim
