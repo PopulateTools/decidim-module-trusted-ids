@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "decidim/trusted_ids/on_omniauth_registration_listener"
+require "decidim/trusted_ids/verifications"
 require "decidim/trusted_ids/engine"
 
 module Decidim
@@ -31,6 +31,12 @@ module Decidim
         icon_path: TrustedIds.omniauth_env("ICON", "media/images/#{TrustedIds.omniauth_provider.downcase}-icon.png"),
         scope: TrustedIds.omniauth_env("SCOPE", "autenticacio_usuari")
       }
+    end
+
+    # how long the verification will be valid, defaults to 90 days
+    # if empty or nil, the verification will never expire
+    config_accessor :verification_expiration_time do
+      ENV.fetch("VERIFICATION_EXPIRATION_TIME", 90).to_i.days
     end
 
     # if false, no notifications will be send to users when automatic verifications are performed

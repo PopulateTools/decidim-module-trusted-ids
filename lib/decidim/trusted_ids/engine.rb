@@ -14,9 +14,13 @@ module Decidim
         # root to: "trusted_ids#index"
       end
 
-      config.to_prepare do
-        # Adds some global css/javascript to the application
-        Decidim::Devise::SessionsController.include(Decidim::TrustedIds::NeedsTrustedIdsSnippets)
+      initializer "decidim_trusted_ids.controller_addons", after: "decidim.action_controller" do
+        config.to_prepare do
+          # Adds some global css/javascript to the application
+          Decidim::Devise::SessionsController.include(Decidim::TrustedIds::NeedsTrustedIdsSnippets)
+          Decidim::Devise::OmniauthRegistrationsController.include(Decidim::TrustedIds::CheckOmniauthEmailOnLogin)
+          Decidim::Verifications::AuthorizationsController.include(Decidim::TrustedIds::NeedsTrustedIdsSnippets)
+        end
       end
 
       initializer "decidim_trusted_ids.omniauth" do
@@ -26,7 +30,7 @@ module Decidim
         omniauth[:site] = "https://identitats.aoc.cat" if omniauth[:site].blank?
         omniauth[:icon_path] = "media/images/#{Decidim::TrustedIds.omniauth_provider.downcase}-icon.png" if omniauth[:icon_path].blank?
         omniauth[:scope] = "autenticacio_usuari" if omniauth[:scope].blank?
-        # Decidim use the secrets configuration to decide whether to show the omniauth provider, we add it here
+        # Decidim uses the secrets configuration to decide whether to show the omniauth provider, we add it here
         Rails.application.secrets[:omniauth][Decidim::TrustedIds.omniauth_provider.to_sym] = omniauth
 
         Rails.application.config.middleware.use OmniAuth::Builder do
@@ -36,6 +40,19 @@ module Decidim
                    site: omniauth[:site],
                    icon_path: omniauth[:icon_path],
                    scope: omniauth[:scope]
+        end
+      end
+
+      initializer "decidim_trusted_ids.authorizations" do
+        # Triggers user verification after login/registration
+        ActiveSupport::Notifications.subscribe "decidim.user.omniauth_registration" do |_name, data|
+          Decidim::TrustedIds::OmniauthVerificationJob.perform_later(data)
+        end
+
+        # Generic verification method for the integrated OAuth mechanism
+        Decidim::Verifications.register_workflow(:trusted_ids_handler) do |workflow|
+          workflow.form = "Decidim::TrustedIds::Verifications::TrustedIdsHandler"
+          workflow.expires_in = Decidim::TrustedIds.verification_expiration_time.to_i
         end
       end
 
