@@ -8,7 +8,7 @@
 
 Translations:
 
-[![Translations](https://badges.awesome-crowdin.com/translation-14246854-583683.png)](https://crowdin.com/project/decidim-trusted-ids)
+[![Translations](https://badges.awesome-crowdin.com/translation-14246854-583683-update.png)](https://crowdin.com/project/decidim-trusted-ids)
 
 This module is an evolution of the original [IdCat Mòbil](https://github.com/gencat/decidim-module-idcat_mobil) that was funded by the Department d'Exteriors of [Generalitat de Catalunya](http://gencat.cat) and developed by [CodiTramuntana](http://coditramuntana.com/).
 
