@@ -67,6 +67,8 @@ Environment variable | Description | Default value
 `VALID_SITE` | The OAuth2 site. | `nil`
 `VALID_ICON` | The icon used for the login button. | `media/images/valid-icon.png`
 `VALID_SCOPE` | The OAuth2 scope that returns the necessary fields for registration (some OAuth method might override this making it unnecessary). | `autenticacio_usuari`
+`VERIFICATION_EXPIRATION_TIME` | In seconds, how long the authorizations will be valid. Use zero or empty to prevent expiration. | 7776000 (90 days)
+`SEND_VERIFICATION_NOTIFICATIONS` | Whether to send notifications to users when they are verified or the verification process fails. | `true`
 
 ### Via initializer
 
