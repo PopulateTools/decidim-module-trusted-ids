@@ -21,6 +21,18 @@ module Decidim
       ENV.fetch("OMNIAUTH_PROVIDER", "valid")
     end
 
+    # From the data obtained we extract metadata to be saved as part of the authorization
+    # This data can later be used by the census_authorization handler as to call the webservice
+    # A hash with keys and how to find it inside hash comming from the OAuth
+    config_accessor :authorization_metadata do
+      {
+        expires_at: [:credentials, :expires_at],
+        identifier_type: [:extra, :identifier_type],
+        method: [:extra, :method],
+        assurance_level: [:extra, :assurance_level]
+      }
+    end
+
     # setup a hash with :client_id, :client_secret and :site to enable omniauth authentication
     config_accessor :omniauth do
       {
@@ -42,6 +54,29 @@ module Decidim
     # if false, no notifications will be send to users when automatic verifications are performed
     config_accessor :send_verification_notifications do
       ENV.has_key?("SEND_VERIFICATION_NOTIFICATIONS") ? TrustedIds.to_bool(ENV.fetch("SEND_VERIFICATION_NOTIFICATIONS")) : true
+    end
+
+    # Linked authorization method that will automatically verify users after getting a valid TrustedIds verification
+    # TODO: from ENV & documentate
+    config_accessor :census_authorization do
+      {
+        handler: ENV.has_key?("CENSUS_AUTHORIZATION_HANDLER") ? ENV.fetch("CENSUS_AUTHORIZATION_HANDLER").to_sym : :via_oberta_handler,
+        form: ENV.fetch("CENSUS_AUTHORIZATION_FORM", "Decidim::ViaOberta::Verifications::ViaObertaHandler"),
+        env: ENV.fetch("CENSUS_AUTHORIZATION_ENV", "preproduction"),
+        api_url: ENV["CENSUS_AUTHORIZATION_API_URL"],
+        # These setting will be added in the organization form at /system as tenant configurable parameters
+        system_attributes: ENV.fetch("CENSUS_AUTHORIZATION_SYSTEM_ATTRIBUTES", "nif ine municipal_code province_code organization_name").split(" ")
+      }
+    end
+
+    def self.census_config_attributes
+      return [] if TrustedIds.census_authorization[:handler].blank?
+      return [] if TrustedIds.census_authorization[:system_attributes].blank?
+      return [] unless TrustedIds.census_authorization[:system_attributes].is_a?(Array)
+
+      TrustedIds.census_authorization[:system_attributes].map do |prop|
+        [prop.to_sym, String]
+      end
     end
   end
 end

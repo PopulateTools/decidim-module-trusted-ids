@@ -2,7 +2,7 @@
 
 shared_context "with oauth configuration" do
   let(:organization) { create(:organization, omniauth_settings: omniauth_settings, available_authorizations: available_authorizations) }
-  let(:available_authorizations) { [:trusted_ids_handler] }
+  let(:available_authorizations) { [:trusted_ids_handler, :via_oberta_handler] }
   let(:enabled) { true }
   let(:omniauth_settings) do
     {
@@ -22,14 +22,35 @@ shared_context "with oauth configuration" do
       info: {
         email: email,
         name: "VALid User"
+      },
+      credentials: {
+        token: "1/xyQlNh52vZdAp3ABYV_e98lfLbXhSEKc093_EGdc",
+        expires_at: 123_456_789,
+        expires: true
+      },
+      extra: {
+        identifier_type: "1",
+        method: "idcatmobil",
+        assurance_level: "low",
+        status: "ok"
       }
     )
   end
+  let(:extra) do
+    {
+      "expires_at" => 123_456_789,
+      "identifier_type" => "1",
+      "method" => "idcatmobil",
+      "assurance_level" => "low"
+    }
+  end
+
   let(:unique_id) { Digest::SHA512.hexdigest("#{omniauth_hash.uid}-#{user.decidim_organization_id}-#{Rails.application.secrets.secret_key_base}") }
   let(:metadata) do
     {
       "uid" => omniauth_hash.uid,
-      "provider" => omniauth_hash.provider
+      "provider" => omniauth_hash.provider,
+      "extra" => extra
     }
   end
 
@@ -48,7 +69,6 @@ shared_context "with oauth configuration" do
 end
 
 shared_context "with stubs example api" do
-  let(:url) { "https://api.example.org/" }
   let(:http_method) { :get }
   let(:http_status) { 200 }
   let(:data) do
@@ -59,13 +79,22 @@ shared_context "with stubs example api" do
       "count" => 0
     }
   end
-  let(:params) do
-    {}
-  end
 
   before do
-    # allow(Decidim::TrustedIds::Api).to receive(:url).and_return(url)
     stub_request(http_method, /api\.example\.org/)
       .to_return(status: http_status, body: data.to_json, headers: {})
+  end
+end
+
+shared_context "with stubs viaoberta api" do
+  let(:url) { "https://serveis3-pre.iop.aoc.cat/siri-proxy/services/Sincron?wsdl" }
+  let(:http_status) { 200 }
+  let(:http_method) { :post }
+  let(:response_file) { "via_oberta_found.xml" }
+  let(:data) { file_fixture(response_file).read }
+
+  before do
+    stub_request(http_method, url)
+      .to_return(status: http_status, body: data, headers: { "Content-Type" => "text/xml" })
   end
 end
