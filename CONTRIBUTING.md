@@ -1,6 +1,6 @@
 # Contributing to this module
 
-> Please read the [README "Usage"](../README.md#usage) to understand how this module can be configured via ENV vars.
+> Please read the [README "Usage"](README.md#usage) to understand how this module can be configured via ENV vars.
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids.
 
@@ -16,42 +16,42 @@ The OmniAuth method **must** return the `uid` property with an unique identifier
 2. Add the class to the `autoloader` section in [strategies.rb](lib/omniauth/strategies.rb), with the name of your OmniAuth class provider.
   ```ruby
   module OmniAuth
-	  module Strategies
-	    autoload :Valid, "omniauth/strategies/valid"
-	    autoload :FooBar, "omniauth/strategies/foo_bar"
-	  end
-	end
-	```
+    module Strategies
+      autoload :Valid, "omniauth/strategies/valid"
+      autoload :FooBar, "omniauth/strategies/foo_bar"
+    end
+  end
+  ```
 
 3. Add the name and description that will be used to present the authorization button in the [locales](config/locales/en.yml) file.
-	```yaml
-	en:
-	  decidim:
-	    trusted_ids:
-	      providers:
-	        valid:
-	          name: VÀLid
-	          description: VÀLid is the digital identity service of the Government of Catalonia.
-					foo_bar:
-						name: "Foo Bar"
-						description: "Foo Bar description"
-	```
+  ```yaml
+  en:
+    decidim:
+      trusted_ids:
+        providers:
+          valid:
+            name: VÀLid
+            description: VÀLid is the digital identity service of the Government of Catalonia.
+          foo_bar:
+            name: "Foo Bar"
+            description: "Foo Bar description"
+  ```
 
   Note that the name of the authorization method associated with the OmniAuth method will be dynamically calculated according to the `name` property. This is done in the file [zz_fallbacks.rb](config/locales/zz_fallbacks.rb).
 
 
 4. In your application, use the ENV `OMNIAUTH_PROVIDER=foo_bar` or create an initializer to specify the default OmniAuth provider:
-	```ruby
-	Decidim::TrustedIds.configure do |config|
-	  config.omniauth_provider = :foo_bar
-	end
-	```
+  ```ruby
+  Decidim::TrustedIds.configure do |config|
+    config.omniauth_provider = :foo_bar
+  end
+  ```
 
 ## Saving metadata extracted from the OAuth provider
 
 Saving metadata extracted from the OAuth provider is optional. But you can use this module to use some of this data to authorize users without relaying on them introducing data.
 
-This process is described in the [README "Workflow" and "Usage"](../README.md#workflow) sections.
+This process is described in the [README "Workflow" and "Usage"](README.md#workflow) sections.
 
 ## Creating and additional census authorization handler
 
@@ -79,16 +79,16 @@ You simply must define a list of fields using the ENV var `CENSUS_AUTHORIZATION_
 ```ruby
 # `config/initializers/decidim_trusted_ids.rb`
 Decidim::TrustedIds.configure do |config|
-	config.census_authorization = {
-	    handler: :my_authorization_handler,
-	    form: "Decidim::MyNameSpace::MyAuthorizationHandler"),
-	    #...any_other_thing..,
-	    system_attributes: "municipal_code province_code organization_name"
+  config.census_authorization = {
+      handler: :my_authorization_handler,
+      form: "Decidim::MyNameSpace::MyAuthorizationHandler"),
+      #...any_other_thing..,
+      system_attributes: "municipal_code province_code organization_name"
     }
 end
 ```
 
-This will create the fields to fill in the System Settings page, see the [README "Screenshots"](../README.md#screenshots) section.
+This will create the fields to fill in the System Settings page, see the [README "Screenshots"](README.md#screenshots) section.
 
 ### Localizing fields
 
@@ -96,13 +96,13 @@ You can localize the fields using the `config/locales/en.yml` attribute names un
 
 ```yaml
 en:
-	activemodel:
+  activemodel:
     attributes:
       trusted_ids_census_config:
-      	settings:
-					municipal_code: Municipal code
-					province_code: Province code
-					organization_name: Organization name
+        settings:
+          municipal_code: Municipal code
+          province_code: Province code
+          organization_name: Organization name
 ```
 
 

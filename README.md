@@ -96,16 +96,16 @@ As the the returned JSON from a successful OAuth login/registration might follow
 
 ```json
 {
-	"uid": "12345678Z",
-	"provider": "valid",
-	"credentials": {
-		"expires_at": "2020-12-31T23:59:59Z"
-	},
-	"info": {
-		"identifier_type": "NIF",
-		"method": "idcat_mobil"
-	},
-	"assurance_level": "high"
+  "uid": "12345678Z",
+  "provider": "valid",
+  "credentials": {
+    "expires_at": "2020-12-31T23:59:59Z"
+  },
+  "info": {
+    "identifier_type": "NIF",
+    "method": "idcat_mobil"
+  },
+  "assurance_level": "high"
 }
 ```
 
@@ -122,14 +122,14 @@ And this will store in the `trusted_ids_handler` authorization metadata the foll
 
 ```json
 {
-	"uid": "12345678Z",
-	"provider": "valid",
-	"extra" {
-		"expires_at": "2020-12-31T23:59:59Z",
-		"identifier_type": "NIF",
-		"method": "idcat_mobil",
-		"assurance_level": "high"
-	}
+  "uid": "12345678Z",
+  "provider": "valid",
+  "extra" {
+    "expires_at": "2020-12-31T23:59:59Z",
+    "identifier_type": "NIF",
+    "method": "idcat_mobil",
+    "assurance_level": "high"
+  }
 }
 ```
 
@@ -144,16 +144,16 @@ For instance, create a file `config/initializers/decidim_trusted_ids.rb` with th
 ```ruby
 Decidim::TrustedIds.configure do |config|
   # The name of the omniauth provider, must be registered in Decidim.
-	config.omniauth_provider = "valid"
-	config.omniauth = {
-		enabled: true,
-		client_id: "my-client-id",
-		client_secret: "my-client-secret",
-		site: "https://identitats-pre.aoc.cat",
-		scope: "autenticacio_usuari",
-		icon: "media/images/valid-icon.png"
-	},
-	...
+  config.omniauth_provider = "valid"
+  config.omniauth = {
+    enabled: true,
+    client_id: "my-client-id",
+    client_secret: "my-client-secret",
+    site: "https://identitats-pre.aoc.cat",
+    scope: "autenticacio_usuari",
+    icon: "media/images/valid-icon.png"
+  },
+  ...
 end
 ```
 
@@ -166,13 +166,15 @@ For the complete list of available options, see the [trusted_ids](lib/decidim/tr
 
 - If the census authorization is created, it will be available in the census authorization page.
   This is how the Via Oberta Handler looks like:
-	![Census authorization](docs/viaoberta.png)
+  ![Census authorization](docs/viaoberta.png)
 
 
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ConsorciAOC-PRJ/decidim-module-trusted-ids.
+
+If you want to create your own authorization or OmniAuth methods, make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file first.
 
 ### Developing
 
