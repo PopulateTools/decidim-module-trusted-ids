@@ -15,6 +15,15 @@ module Decidim
       ActiveRecord::Type::Boolean.new.deserialize(val.to_s.downcase)
     end
 
+    def self.omniauth_metadata_attributes
+      valid_keys = ENV.keys.filter { |key| key.starts_with?("#{TrustedIds.omniauth_provider.upcase}_METADATA_") }
+      return nil if valid_keys.blank?
+
+      valid_keys.map do |key|
+        [key.gsub("#{TrustedIds.omniauth_provider.upcase}_METADATA_", "").downcase.to_sym, ENV[key].split(" ").map(&:to_sym)]
+      end.to_h
+    end
+
     # The name of the omniauth provider, must be registered in Decidim.
     # Leave it empty to disable omniauth authentication.
     config_accessor :omniauth_provider do
@@ -25,7 +34,7 @@ module Decidim
     # This data can later be used by the census_authorization handler as to call the webservice
     # A hash with keys and how to find it inside hash comming from the OAuth
     config_accessor :authorization_metadata do
-      {
+      TrustedIds.omniauth_metadata_attributes || {
         expires_at: [:credentials, :expires_at],
         identifier_type: [:extra, :identifier_type],
         method: [:extra, :method],
@@ -57,12 +66,11 @@ module Decidim
     end
 
     # Linked authorization method that will automatically verify users after getting a valid TrustedIds verification
-    # TODO: from ENV & documentate
     config_accessor :census_authorization do
       {
         handler: ENV.has_key?("CENSUS_AUTHORIZATION_HANDLER") ? ENV.fetch("CENSUS_AUTHORIZATION_HANDLER").to_sym : :via_oberta_handler,
         form: ENV.fetch("CENSUS_AUTHORIZATION_FORM", "Decidim::ViaOberta::Verifications::ViaObertaHandler"),
-        env: ENV.fetch("CENSUS_AUTHORIZATION_ENV", "preproduction"),
+        env: ENV.fetch("CENSUS_AUTHORIZATION_ENV", "production"),
         api_url: ENV["CENSUS_AUTHORIZATION_API_URL"],
         # These setting will be added in the organization form at /system as tenant configurable parameters
         system_attributes: ENV.fetch("CENSUS_AUTHORIZATION_SYSTEM_ATTRIBUTES", "nif ine municipal_code province_code organization_name").split(" ")
