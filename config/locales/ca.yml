@@ -1,21 +1,99 @@
 ---
 ca:
+  activemodel:
+    attributes:
+      trusted_ids_census_config:
+        settings:
+          ine: Identificador del sol·licitant (INE)
+          municipal_code: Codi municipal
+          nif: NIF
+          organization_name: Nom públic de l'organització
+          province_code: Codi província
+      via_oberta_handler:
+        document_type: 'No s''ha pogut obtenir automàticament. Seleccioneu-ne un de la llista:'
   decidim:
-    components:
-      idcat_mobil:
-        name: IdCat Mòbil
+    authorization_handlers:
+      trusted_ids_handler:
+        explanation: Aquesta autorització s'atorga a tots els usuaris que utilitzen un mètode d'inici de sessió amb identificador fefaent.
+        fields:
+          extra: Informació addicional
+          provider: Proveïdor
+          uid: ID
+        name: Identificador fefaent
+      via_oberta_handler:
+        explanation: Aquesta autorització s'atorga a tots els usuaris que es troben a la base de dades del cens de Via Oberta.
+        fields:
+          document_id: DNI/NIF
+        name: Via Oberta
+    events:
+      trusted_ids:
+        verifications:
+          invalid:
+            email_intro: No ha estat possible realitzar la verificació amb l'identificador fefaent.
+            email_outro: Si us plau, poseu-vos en contacte amb el suport de la plataforma per comprovar l'error que s'ha produït.
+            email_subject: Error d'autorització
+            notification_title: Autorització invàlida amb l'identificador fefaent
+          ok:
+            email_intro: Ha estat possible realitzar la verificació amb l'identificador fefaent.
+            email_outro: Ara podeu realitzar totes les accions que requereixin l'autorització de l'identificador fefaent.
+            email_subject: S'ha autoritzat correctament
+            notification_title: Autorització vàlida amb l'identificador fefaent
+    system:
+      organizations:
+        omniauth_settings:
+          valid:
+            client_id: Client ID
+            client_secret: Clau secreta del Client
+            icon_path: Icona (sempre en format media/images/some-image.png)
+            scope: Àmbit
+            site: URL proveïdor
+    trusted_ids:
+      providers:
+        default:
+          description: Aquesta autorització s'atorga a tots els usuaris que utilitzen un mètode d'inici de sessió amb identificador fefaent.
+          name: Identificador fefaent
+        valid:
+          description: VÀLid és el servei d'identitat digital de la Generalitat de Catalunya.
+          name: VÀLid
+      sessions:
+        different_omniauth_emails: Esteu provant d'iniciar la sessió amb un correu electrònic diferent al del vostre compte. Accedeix amb el mateix correu electrònic o tanca la sessió i registreu-vos directament per crear un usuari nou.
+      system:
+        settings: "%{handler} configuració"
+      verifications:
+        form:
+          cancel: Cancel·la la verificació
+          description_html: Per obtenir aquesta autorització, heu de verificar la vostra identitat amb el servei %{provider}. Per fer-ho, feu clic al botó "%{link}".<br><br>
+          error_provider_html: "<b>%{provider} no està disponible.</b> Sembla que aquest mètode d'inici de sessió/autorització no s'ha activat. Poseu-vos en contacte amb el suport de la plataforma per solucionar-ho."
+          warning_html: Assegureu-vos que el correu electrònic que teniu en aquesta aplicació (<em>%{email}</em>) sigui el mateix que el que us proporciona el servei %{provider}. En cas contrari, la verificació fallarà.
     verifications:
-      idcat_mobil:
+      authorizations:
+        first_login:
+          actions:
+            trusted_ids_generic: Verifica't amb %{provider}
+            via_oberta_handler: Verifica't amb Via Oberta
+      trusted_ids:
         errors:
-          invalid_method: No us heu pogut verificar. El mètode de verificació OAuth2 no era "idcat_mobil" tal com s'esperava.
-          invalid_status: No us heu pogut verificar. La verificació OAuth2 ha estat correcta.
-        invalid:
-          email_intro: No s'ha pogut concedir l'autorització d'IdCat Mòbil.
-          email_outro: Si us plau, poseu-vos en contacte amb el suport de la vostra plataforma per comprovar l'error que s'ha produït.
-          email_subject: No us heu pogut atoritzar amb IdCat Mòbil
-          notification_title: No us heu pogut atoritzar amb IdCat Mòbil
-        ok:
-          email_intro: Se us ha concedit l'autorització amb IdCat Mòbil.
-          email_outro: Ara podeu realitzar totes les accions que requereixin l'autorització d'IdCat Mòbil.
-          email_subject: Has estat autoritzat amb a IdCat Mòbil.
-          notification_title: L'autenticació amb IdCat Mòbil ha acabat amb èxit.
+          invalid_census: No s'ha pogut verificar. És possible que les dades proporcionades a la passarel·la del cens no siguin vàlides.
+          invalid_id: No s'ha pogut verificar. L'identificador del document no és vàlid o no es troba en el cens.
+          invalid_method: No us heu pogut verificar. El mètode de verificació OAuth2 no està suportat.
+          invalid_status: No us heu pogut verificar. La verificació OAuth2 ha estat incorrecta.
+          invalid_type: No s'ha pogut verificar. El tipus de document no és vàlid o no està en el cens.
+          no_identity: No s'ha pogut verificar. La verificació OAuth2 no ha retornat cap identificació.
+    via_oberta:
+      verifications:
+        document_type:
+          nie: NIE
+          nif: NIF
+          others: Permís de residència o altres
+          passport: Passaport
+        form:
+          code: 'Codi d''error: %{code}'
+          data: 'Data per ser enviat:'
+          description_html: <p>Aquesta autorització comprova si sou a la base de dades del cens <b>%{organization_name}</b>.</p> <p>Per dur a terme aquesta comprovació, s'enviarà la informació següent al <a href=" https://www.aoc.cat/serveis-aoc/via-oberta/" target="_blank">Servei Via Oberta</a>, ofert pel <a href="https://www.aoc.cat " target="_blank">Administració Oberta de Catalunya</a></p> <p>Aquesta informació s'utilitzarà amb l'únic propòsit de verificar la vostra identitat, però els registres d'aquesta transacció poden ser conservats pel proveïdor de serveis.</p>
+          document_id: Número de document
+          document_type: Tipus de document
+          error: 'Missatge d''error del servei:'
+        tos:
+          agreement: Accepto els termes d'ús i condicions del servei
+          content_html: <p>En fer clic al botó "Accepto", accepteu les condicions del servei següents:</p> <ol> <li>La informació proporcionada al servei Via Oberta s'utilitzarà amb l'únic propòsit de verificar el vostre identitat.</li> <li>El proveïdor de serveis podria conservar els registres d'aquesta transacció.</li> <li>El proveïdor de serveis no compartirà aquesta informació amb tercers.</li> </ol>
+          title: Termes d'ús i servei Via Oberta
