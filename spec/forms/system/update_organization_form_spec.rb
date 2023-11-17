@@ -15,9 +15,14 @@ module Decidim::System
         available_locales: ["en"],
         default_locale: "en",
         users_registration_mode: "enabled",
-        trusted_ids_census_config: trusted_ids_census_config
+        trusted_ids_census_config: trusted_ids_census_config,
+        census_expiration_apply_all_tenants: expiration_all_tenants,
+        census_tos_apply_all_tenants: tos_all_tenants
       )
     end
+
+    let(:expiration_all_tenants) { false }
+    let(:tos_all_tenants) { false }
 
     let(:trusted_ids_census_config) do
       {
