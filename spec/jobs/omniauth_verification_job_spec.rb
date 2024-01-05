@@ -39,7 +39,7 @@ module Decidim::TrustedIds
     end
     let(:authorization) { Decidim::Authorization.last }
 
-    class TestRectifyPublisher < Rectify::Command
+    class TestRectifyPublisher < Decidim::Command
       include Wisper::Publisher
       def initialize(*args); end
     end
@@ -65,7 +65,8 @@ module Decidim::TrustedIds
               affected_users: [user],
               extra: {
                 status: "ok",
-                errors: []
+                errors: [],
+                force_email: true
               }
             )
 
@@ -85,7 +86,8 @@ module Decidim::TrustedIds
               affected_users: [user],
               extra: {
                 status: "invalid",
-                errors: []
+                errors: [],
+                force_email: true
               }
             )
 

@@ -9,7 +9,7 @@ module Decidim
         @data = data
 
         unless data[:provider].to_s == Decidim::TrustedIds.omniauth_provider.to_s
-          Rails.logger.debug "OmniauthVerificationJob: Omniauth [#{data[:provider]}] is not a valid trusted_ids provider (#{Decidim::TrustedIds.omniauth_provider})"
+          Rails.logger.debug { "OmniauthVerificationJob: Omniauth [#{data[:provider]}] is not a valid trusted_ids provider (#{Decidim::TrustedIds.omniauth_provider})" }
           return
         end
 
@@ -66,7 +66,8 @@ module Decidim
           affected_users: [user],
           extra: {
             status: status.to_s,
-            errors: handler.errors.full_messages
+            errors: handler.errors.full_messages,
+            force_email: true
           }
         )
       end
