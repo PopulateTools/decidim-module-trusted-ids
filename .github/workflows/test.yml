@@ -9,6 +9,7 @@ on:
 
 env:
   RUBY_VERSION: 3.0.6
+  CI: 1
 
 jobs:
   test:
@@ -62,13 +63,12 @@ jobs:
         run: bundle exec rspec
         env:
           SIMPLECOV: 1
-          CODECOV: 1
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: openpoke/decidim-module-anonymous_codes
+          slug: openpoke/decidim-module-trusted_ids
 
       - uses: actions/upload-artifact@v4
         if: always()
