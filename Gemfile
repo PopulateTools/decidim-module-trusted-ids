@@ -17,14 +17,21 @@ gem "decidim-trusted_ids", path: "."
 
 gem "bootsnap", "~> 1.7"
 
+gem "concurrent-ruby", "1.3.4"
+
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
 
   gem "decidim-dev", DECIDIM_VERSION
+
+  # Set versions because Property AutoCorrect errors.
+  gem "rspec-rails", "~> 6.0.4"
+  gem "rubocop-factory_bot", "2.25.1"
+  gem "rubocop-rspec", "2.26.1"
 end
 
 group :development do
-  gem "faker", "~> 2.14"
+  gem "faker"
   gem "letter_opener_web"
   gem "listen"
   gem "rubocop-faker"

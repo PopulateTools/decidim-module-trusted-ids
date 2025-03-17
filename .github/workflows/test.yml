@@ -8,7 +8,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.0.6
+  RUBY_VERSION: 3.1.1
   CI: 1
 
 jobs:
@@ -46,6 +46,10 @@ jobs:
       - name: Remove Chrome
         shell: "bash"
         run: sudo apt remove google-chrome-stable
+
+      - name: Install imagemagick
+        shell: "bash"
+        run: sudo apt install imagemagick
 
       - uses: browser-actions/setup-chrome@v1
         with:
