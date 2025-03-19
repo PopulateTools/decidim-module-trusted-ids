@@ -25,9 +25,9 @@ group :development, :test do
   gem "decidim-dev", DECIDIM_VERSION
 
   # Set versions because Property AutoCorrect errors.
-  gem "rspec-rails", "~> 6.0.4"
-  gem "rubocop-factory_bot", "2.25.1"
-  gem "rubocop-rspec", "2.26.1"
+  gem "rspec-rails", "~> 6.0"
+  gem "rubocop-factory_bot", "~> 2.26"
+  gem "rubocop-rspec", "~> 3.0"
 end
 
 group :development do
